@@ -1,0 +1,42 @@
+appId: com.voiceassistant.app
+productName: Voice Assistant
+copyright: Copyright © 2024
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - packages/main/dist/**/*
+  - packages/preload/dist/**/*
+  - packages/renderer/dist/**/*
+  - package.json
+
+extraMetadata:
+  main: packages/main/dist/index.js
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-win.${ext}
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  artifactName: ${productName}-${version}-mac.${ext}
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: true
+
+publish:
+  provider: github
+  releaseType: release
