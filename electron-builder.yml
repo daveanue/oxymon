@@ -23,6 +23,7 @@ win:
   artifactName: ${productName}-${version}-win.${ext}
 
 mac:
+  identity: null
   target:
     - target: dmg
       arch:
