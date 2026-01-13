@@ -49,7 +49,7 @@ describe('SSMLRenderer', () => {
             const plan = { ...getDefaultProsodyPlan(), speed: 1.5 };
             const ssml = renderSSML('Fast', plan);
 
-            expect(ssml).toContain('<prosody rate="150%">');
+            expect(ssml).toContain('<prosody rate="1.5">');
         });
 
         it('should render prosody tags for pitch', () => {
