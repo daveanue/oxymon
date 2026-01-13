@@ -28,8 +28,8 @@ A desktop AI voice assistant with **emotionally correct delivery** — not just 
 
 | Sprint | Focus | Status |
 |:---|:---|:---|
-| **1** | VAD + Audio Capture | 📋 Planned |
-| **2** | Prosody Schema + SSML + TTS | 🔄 In Progress |
+| **1** | VAD + Audio Capture | 🔄 In Progress |
+| **2** | Prosody Schema + SSML + TTS | ✅ Completed |
 | **3** | Gemini Live Integration | 📋 Planned |
 | **4** | SER + Memory | 📋 Planned |
 | **5** | Full Pipeline Integration | 📋 Planned |
@@ -44,10 +44,11 @@ A desktop AI voice assistant with **emotionally correct delivery** — not just 
 - Prosody schema types (`ProsodySchema.ts`)
 - Prosody validator with clamping (`ProsodyValidator.ts`)
 - SSML renderer for multiple TTS providers (`SSMLRenderer.ts`)
-- 25 unit tests passing
+- Cartesia TTS integration (`CartesiaTTSProvider.ts`)
+- 33 unit tests passing
 
 ### 🔄 In Progress
-- Cartesia TTS integration
+- Silero VAD implementation
 
 ### 📋 Planned
 - Silero VAD implementation
