@@ -6,11 +6,11 @@
  */
 
 import { CartesiaClient } from '@cartesia/cartesia-js';
-import { VoiceProvider } from '../../../../core/src/providers/voice/VoiceProvider';
-import { renderSSML } from '../../../../core/src/prosody/SSMLRenderer';
-import { validateProsody, getDefaultProsodyPlan } from '../../../../core/src/prosody/ProsodyValidator';
-import { ProsodyPlan } from '../../../../core/src/types/ProsodySchema';
-import { logger } from '../../../../core/src/utils/logger';
+import { VoiceProvider } from '@app/core/providers/voice/VoiceProvider';
+import { renderSSML } from '@app/core/prosody/SSMLRenderer';
+import { validateProsody, getDefaultProsodyPlan } from '@app/core/prosody/ProsodyValidator';
+import { ProsodyPlan } from '@app/core/types/ProsodySchema';
+import { logger } from '@app/core/utils/logger';
 
 export class CartesiaTTSProvider implements VoiceProvider {
     public readonly name = 'cartesia-tts';
@@ -110,47 +110,42 @@ export class CartesiaTTSProvider implements VoiceProvider {
      */
     private async synthesizeToBuffer(ssml: string): Promise<ArrayBuffer> {
         const response = await this.client.tts.bytes({
-            model_id: 'sonic-english', // Or make configurable
+            modelId: 'sonic-english',
             voice: {
                 mode: 'id',
                 id: this.voiceId,
             },
             transcript: ssml,
-            output_format: {
+            outputFormat: {
                 container: 'raw',
                 encoding: 'pcm_f32le',
-                sample_rate: 44100,
+                sampleRate: 44100,
             },
         });
 
-        return response;
+        // Response is a Readable stream, collect into buffer
+        // @ts-ignore - TS might complain about async iteration on Readable if types aren't perfect
+        const chunks: Buffer[] = [];
+        for await (const chunk of response) {
+            chunks.push(Buffer.from(chunk));
+        }
+        const buffer = Buffer.concat(chunks);
+        return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
     }
 
     /**
-     * Play raw PCM audio buffer
+     * Play raw PCM audio buffer by sending to renderer.
+     * Electron main process cannot play audio directly via Web Audio API.
      */
     private async playAudio(buffer: ArrayBuffer): Promise<void> {
-        if (!this.audioContext) {
-            this.audioContext = new AudioContext({ sampleRate: 44100 });
+        // Import dynamically to avoid circular dependencies if any
+        const { getMainWindow } = await import('../window.js');
+        const mainWindow = getMainWindow();
+
+        if (mainWindow) {
+            mainWindow.webContents.send('voice:play-audio', buffer);
+        } else {
+            logger.warn('Cannot play audio: No main window found');
         }
-
-        // Convert raw bytes to AudioBuffer
-        // Note: Cartesia returns f32le PCM, which maps directly to detailed Web Audio API
-        const float32Data = new Float32Array(buffer);
-        const audioBuffer = this.audioContext.createBuffer(1, float32Data.length, 44100);
-        audioBuffer.copyToChannel(float32Data, 0);
-
-        this.sourceNode = this.audioContext.createBufferSource();
-        this.sourceNode.buffer = audioBuffer;
-        this.sourceNode.connect(this.audioContext.destination);
-        this.sourceNode.start();
-
-        return new Promise((resolve) => {
-            if (this.sourceNode) {
-                this.sourceNode.onended = () => resolve();
-            } else {
-                resolve();
-            }
-        });
     }
 }

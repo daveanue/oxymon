@@ -3,6 +3,8 @@
  * Abstract interface for voice providers (STT + TTS or Voice-to-Voice)
  */
 
+import { ProsodyPlan } from '../../types/ProsodySchema';
+
 export interface VoiceProvider {
     /**
      * Provider name for identification
@@ -20,9 +22,9 @@ export interface VoiceProvider {
     stopListening(): Promise<void>;
 
     /**
-     * Speak the given text
+     * Speak the given text with optional prosody
      */
-    speak(text: string): Promise<void>;
+    speak(text: string, prosody?: ProsodyPlan): Promise<void>;
 
     /**
      * Stop current speech

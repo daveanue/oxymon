@@ -8,6 +8,9 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
+        "@app/core": "file:../core",
+        "@cartesia/cartesia-js": "^2.2.9",
+        "dotenv": "^9.0.2",
         "electron-updater": "^6.1.0"
     },
     "devDependencies": {

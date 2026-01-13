@@ -17,6 +17,12 @@ const windowAPI = {
 const voiceAPI = {
     startListening: () => ipcRenderer.invoke('voice:startListening'),
     stopListening: () => ipcRenderer.invoke('voice:stopListening'),
+    speak: (text: string, prosody?: any) => ipcRenderer.invoke('voice:speak', text, prosody),
+    onAudioPlayback: (callback: (buffer: ArrayBuffer) => void) => {
+        const subscription = (_event: any, buffer: ArrayBuffer) => callback(buffer);
+        ipcRenderer.on('voice:play-audio', subscription);
+        return () => ipcRenderer.removeListener('voice:play-audio', subscription);
+    },
 };
 
 // Chat API

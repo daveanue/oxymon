@@ -16,14 +16,26 @@
             "@app/main": [
                 "packages/main/src"
             ],
+            "@app/main/*": [
+                "packages/main/src/*"
+            ],
             "@app/preload": [
                 "packages/preload/src"
+            ],
+            "@app/preload/*": [
+                "packages/preload/src/*"
             ],
             "@app/renderer": [
                 "packages/renderer/src"
             ],
+            "@app/renderer/*": [
+                "packages/renderer/src/*"
+            ],
             "@app/core": [
                 "packages/core/src"
+            ],
+            "@app/core/*": [
+                "packages/core/src/*"
             ]
         }
     },

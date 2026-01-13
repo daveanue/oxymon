@@ -1,5 +1,10 @@
 import { defineConfig } from 'vite';
 import { builtinModules } from 'module';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
     build: {
@@ -18,5 +23,10 @@ export default defineConfig({
         },
         emptyOutDir: true,
         sourcemap: true,
+    },
+    resolve: {
+        alias: {
+            '@app/core': resolve(__dirname, '../core/src'),
+        },
     },
 });

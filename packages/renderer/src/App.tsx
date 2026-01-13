@@ -3,6 +3,8 @@ import { VoiceOrb } from './components/VoiceOrb';
 import { ChatPanel } from './components/ChatPanel';
 import { useAppStore } from './store';
 
+import { useAudioPlayer } from './hooks/useAudioPlayer';
+
 // Declare the electronAPI type
 declare global {
     interface Window {
@@ -16,6 +18,8 @@ declare global {
             voice: {
                 startListening: () => Promise<{ success: boolean }>;
                 stopListening: () => Promise<{ success: boolean }>;
+                speak: (text: string, prosody?: any) => Promise<{ success: boolean }>;
+                onAudioPlayback: (callback: (buffer: ArrayBuffer) => void) => () => void;
             };
             chat: {
                 sendMessage: (message: string) => Promise<{ success: boolean; response: string }>;
@@ -29,6 +33,7 @@ declare global {
 
 function App() {
     const { isExpanded, setExpanded } = useAppStore();
+    useAudioPlayer(); // Initialize audio player listener
 
     const handleExpand = async () => {
         await window.electronAPI.window.expand();
