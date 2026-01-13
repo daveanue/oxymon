@@ -89,9 +89,8 @@ function wrapProsody(text: string, speed: number, pitch: number): string {
     const parts: string[] = [];
 
     if (speed !== 1.0) {
-        // Convert multiplier to percentage: 1.0 = 100%, 1.5 = 150%
-        const rate = Math.round(speed * 100);
-        parts.push(`rate="${rate}%"`);
+        // Output decimal rate: 1.0, 1.5, 0.8
+        parts.push(`rate="${speed}"`);
     }
 
     if (pitch !== 0) {

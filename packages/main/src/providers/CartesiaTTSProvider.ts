@@ -20,7 +20,7 @@ export class CartesiaTTSProvider implements VoiceProvider {
     private audioContext: AudioContext | null = null;
     private sourceNode: AudioBufferSourceNode | null = null;
 
-    constructor(apiKey: string, voiceId: string = 'a0e99841-438c-4a64-b679-ae501e7d6091') { // Default to Sonic English
+    constructor(apiKey: string, voiceId: string = 'a53c3509-ec3f-425c-a223-977f5f7424dd') { // Default to chinese
         this.client = new CartesiaClient({ apiKey });
         this.voiceId = voiceId;
         this.isReady = true;
