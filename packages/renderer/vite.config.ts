@@ -20,7 +20,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@app/core': resolve(__dirname, '../core/src'),
+            '@app/core': resolve(process.cwd(), '../../packages/core/src'),
         },
     },
 });
