@@ -7,8 +7,7 @@
             "DOM.Iterable"
         ],
         "jsx": "react-jsx",
-        "outDir": "./dist",
-        "rootDir": "./src"
+        "outDir": "./dist"
     },
     "include": [
         "src/**/*",
